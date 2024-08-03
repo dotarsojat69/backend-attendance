@@ -9,6 +9,10 @@ const cloudinary = require("../utils/configs/cloudinary");
 const Users = sequelize.define(
   "users",
   {
+    nik: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     full_name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -30,11 +34,11 @@ const Users = sequelize.define(
       defaultValue:
         "https://res.cloudinary.com/hypeotesa/image/upload/v1698932147/kitchen-sink/yacw1yf1a7hdbh4ucx8u.png",
     },
-    address: {
+    position: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    phone_number: {
+    working_hour: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -82,7 +86,6 @@ export const updateUserByIdToken = async (
   if (req.file) {
     const { path } = req.file;
 
-    // TODO: Change any to proper types
     const uploader = async (path: any) =>
       await cloudinary.uploads(path, "kitchen-sink");
     const newPath = await uploader(path);
@@ -108,6 +111,24 @@ export const deleteUserByIdToken = async (req: Request) => {
       id: user_id,
     },
   });
+
+  return user;
+};
+
+export const getUserById = async (id: string, requestingUserRole: string) => {
+  // TODO: Implement caching to improve performance
+  if (requestingUserRole !== 'user') {
+    throw new Error('Unauthorized access');
+  }
+
+  const user = await Users.findOne({
+    where: { id, deletedAt: null },
+    attributes: ['id', 'nik', 'full_name', 'email', 'role', 'profile_picture', 'position', 'working_hour'],
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
 
   return user;
 };
