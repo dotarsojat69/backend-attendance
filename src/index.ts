@@ -1,12 +1,22 @@
-import express from 'express';
+require("dotenv").config();
+import http from "http";
 
-const app = express();
-const port = 3000;
+import routes from "./routes";
 
-app.get('/', (req, res) => {
-  res.send('Hello, TypeScript with Express!');
-});
+declare module "express-serve-static-core" {
+  interface Request {
+    token: {
+      user_id: number;
+      role: "user" | "admin";
+    };
+  }
+}
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const server = http.createServer(routes);
+
+const { API_PORT } = process.env;
+const port = process.env.PORT ?? API_PORT;
+
+server.listen(port, () => {
+  console.log(`Server ready to serve and running on port ${port}`);
 });
