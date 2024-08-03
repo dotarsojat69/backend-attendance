@@ -60,7 +60,7 @@ sequelize
 
 export const getUserByIdToken = async (req: Request) => {
   const { user_id } = req.token;
-  const user = await Users.findOne({
+  const user = await Users.findAll({
     where: { id: user_id, deletedAt: null },
     attributes: {
       exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
@@ -87,7 +87,7 @@ export const updateUserByIdToken = async (
     const { path } = req.file;
 
     const uploader = async (path: any) =>
-      await cloudinary.uploads(path, "kitchen-sink");
+      await cloudinary.uploads(path, "dj9i0bcyg");
     const newPath = await uploader(path);
 
     newBody.profile_picture = newPath.url;
