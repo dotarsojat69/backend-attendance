@@ -115,20 +115,11 @@ export const deleteUserByIdToken = async (req: Request) => {
   return user;
 };
 
-export const getUserById = async (id: string, requestingUserRole: string) => {
-  // TODO: Implement caching to improve performance
-  if (requestingUserRole !== 'user') {
-    throw new Error('Unauthorized access');
-  }
-
+export const getUserById = async (id: string) => {
   const user = await Users.findOne({
     where: { id, deletedAt: null },
     attributes: ['id', 'nik', 'full_name', 'email', 'role', 'profile_picture', 'position', 'working_hour'],
   });
-
-  if (!user) {
-    throw new Error('User not found');
-  }
 
   return user;
 };
