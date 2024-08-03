@@ -29,7 +29,7 @@ router
     userGetDetail
   )
   .put(
-    (req, res, next) => verifyToken(req, res, next, ["user", "admin"]),
+    (req, res, next) => verifyToken(req, res, next, ["admin"]),
     upload.single("profile_picture"),
     userUpdate
   );
