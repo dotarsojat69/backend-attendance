@@ -20,7 +20,7 @@ router
 router
   .route("/attendance/:id_attendance")
   .get(
-    (req, res, next) => verifyToken(req, res, next, ["user", "admin"]),
+    (req, res, next) => verifyToken(req, res, next, ["admin"]),
     getAttendanceDetails
   );
 
