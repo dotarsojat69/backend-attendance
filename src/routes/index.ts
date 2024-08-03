@@ -7,7 +7,7 @@ import usersRouter from "../users/users.routes";
 const app = express();
 const corsOptions = {
   origin: "*",
-  methods: ["GET", "POST", "DELETE", "PUT"],
+  methods: ["GET", "POST"],
 };
 
 app.use(cors(corsOptions));
