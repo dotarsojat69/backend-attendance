@@ -8,7 +8,7 @@ const sequelize = new Sequelize({
   database: DB_NAME,
   host: HOST,
   dialect: "postgres",
-  port: 5342,
+  port: 5432,
 });
 
 sequelize
@@ -17,6 +17,8 @@ sequelize
     console.log("Connection has been established successfully.");
   })
   .catch((err: any) => {
+    console.log(DB_PASSWORD);
+    console.log(DB_NAME);
     console.error("database connection failed. exiting now...");
     console.error(err.message);
     process.exit(1);

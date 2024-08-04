@@ -14,7 +14,7 @@ declare module "express-serve-static-core" {
 
 const server = http.createServer(routes);
 
-const { API_PORT } = process.env;
+const { API_PORT }  = process.env;
 const port = process.env.PORT ?? API_PORT;
 
 server.listen(port, () => {
