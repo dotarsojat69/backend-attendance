@@ -5,11 +5,41 @@ import {
   updateUserByIdToken,
   deleteUserByIdToken,
   getUserById,
+  regisUser,
+  getUserByEmail,
 } from "./users.model";
 
-import { userSchema } from "./users.types";
+import { registerSchema, userSchema } from "./users.types";
 import { nonBodySchema, bodySchema } from "../utils/types/type";
 import { zParse } from "../utils/zParse";
+
+export const userSignup = async (req: Request, res: Response) => {
+  try {
+    const { query, body } = await zParse(registerSchema, req);
+
+    const oldUser = await getUserByEmail(body.email, false);
+
+    if (oldUser?.isSoftDeleted()) {
+      return res.status(409).json({
+        message: "Cannot use registered email, please try another one.",
+      });
+    }
+
+    if (oldUser) {
+      return res
+        .status(409)
+        .json({ message: "User already exist, please login." });
+    }
+
+    if (query.overwrite === "true") {
+      await regisUser(body);
+    }
+
+    return res.status(201).json({ message: "User registered, please login." });
+  } catch (err: any) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
 export const userGet = async (req: Request, res: Response) => {
   try {

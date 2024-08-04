@@ -1,37 +1,9 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 
-import { loginUser, regisUser, getUserByEmail } from "./auth.model";
-import { registerSchema, loginSchema } from "./auth.types";
+import { loginUser, getUserByEmail } from "./auth.model";
+import { loginSchema } from "./auth.types";
 import { zParse } from "../utils/zParse";
-
-export const userSignup = async (req: Request, res: Response) => {
-  try {
-    const { query, body } = await zParse(registerSchema, req);
-
-    const oldUser = await getUserByEmail(body.email, false);
-
-    if (oldUser?.isSoftDeleted()) {
-      return res.status(409).json({
-        message: "Cannot use registered email, please try another one.",
-      });
-    }
-
-    if (oldUser) {
-      return res
-        .status(409)
-        .json({ message: "User already exist, please login." });
-    }
-
-    if (query.overwrite === "true") {
-      await regisUser(body);
-    }
-
-    return res.status(201).json({ message: "User registered, please login." });
-  } catch (err: any) {
-    return res.status(500).json({ message: err.message });
-  }
-};
 
 export const userLogin = async (req: Request, res: Response) => {
   try {

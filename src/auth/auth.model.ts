@@ -1,24 +1,6 @@
 import jsonwebtoken from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 
 import Users from "../users/users.model";
-import { RegistSchema } from "./auth.types";
-
-export const regisUser = async (body: RegistSchema) => {
-  const { email, password } = body;
-
-  const encryptedPassword = await bcrypt.hash(password, 10);
-
-  const object = {
-    ...body,
-    email: email.toLowerCase(),
-    password: encryptedPassword,
-  };
-
-  const user = await Users.create(object);
-
-  return user;
-};
 
 export const loginUser = async (data: any, email: string) => {
   const token = jsonwebtoken.sign(
