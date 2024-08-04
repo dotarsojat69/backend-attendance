@@ -7,6 +7,8 @@ import { userSignup } from "../users/users.controller";
 
 const router = express.Router();
 
+router.post("/register", userSignup);
+
 router
   .route("/users")
   .post(
