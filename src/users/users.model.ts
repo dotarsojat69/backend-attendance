@@ -32,13 +32,17 @@ const Users = sequelize.define(
     profile_picture: {
       type: DataTypes.TEXT,
       defaultValue:
-        "https://res.cloudinary.com/hypeotesa/image/upload/v1698932147/kitchen-sink/yacw1yf1a7hdbh4ucx8u.png",
+        "https://res.cloudinary.com/dj9i0bcyg/image/upload/v1722767567/pp_hyticn.png",
     },
     position: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     working_hour: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    location: {
       type: DataTypes.STRING,
       allowNull: false,
     },
