@@ -21,6 +21,9 @@ export const userSchema = z.object({
   working_hour: z.string({
     required_error: "Working Hour is required",
   }),
+  location: z.string({
+    required_error: "Location is required",
+  }),
   profile_picture: z.string().optional(),
 });
 
