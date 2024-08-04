@@ -8,7 +8,7 @@ const router = express.Router();
 router
   .route("/attendance")
   .get(
-    (req, res, next) => verifyToken(req, res, next, ["user", "admin"]),
+    (req, res, next) => verifyToken(req, res, next, ["admin"]),
     getAllAttendances
   )
   .post(
@@ -18,7 +18,7 @@ router
   );
 
 router
-  .route("/attendance/:id_attendance")
+  .route("/attendance/:id_user")
   .get(
     (req, res, next) => verifyToken(req, res, next, ["admin"]),
     getAttendanceDetails

@@ -3,7 +3,6 @@ import { Request } from "express";
 import sequelize from "../utils/configs/database";
 import Users from "../users/users.model";
 import { AttendanceCreateSchema } from "./attendance.types";
-import { getPagination, getPagingData } from "../utils/formatter/api";
 import { QuerySchema } from "../utils/types/type";
 
 const cloudinary = require("../utils/configs/cloudinary")
@@ -23,9 +22,9 @@ const Attendance = sequelize.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    profile_picture: {
+    picture: {
       type: DataTypes.TEXT,
-      defaultValue: "https://res.cloudinary.com/hypeotesa/image/upload/v1698932147/kitchen-sink/yacw1yf1a7hdbh4ucx8u.png",
+      allowNull: false,
     },
   },
   {
@@ -47,26 +46,14 @@ sequelize
   
 
   export const getAttendances = async (req: QuerySchema) => {
-    let order: Order = [["createdAt", "DESC"]];
-    let where: WhereOptions<any> = {};
-  
-    if (req.query) {
-      where = { ...where, id_user: { [Op.iLike]: `%${req.query}%` } };
-    }
-  
-    const { limit, offset } = getPagination(+req.page, +req.limit);
-  
-    const response = await Attendance.findAndCountAll({
-      where,
-      order,
-      limit,
-      offset,
-      include: [{ model: Users, attributes: ['full_name'] }],
-    });
-  
-    const result = getPagingData(response, +req.page, limit);
-    return result;
-  };
+  const attendance = await Attendance.findAll({
+    where: { deletedAt: null },
+    attributes: {
+      exclude: ["password", "updatedAt", "deletedAt"],
+    },
+  });
+  return attendance;
+};
 
 export const createAttendance = async (req: Request, body: AttendanceCreateSchema) => {
     
@@ -81,7 +68,7 @@ export const createAttendance = async (req: Request, body: AttendanceCreateSchem
         await cloudinary.uploads(path, "dj9i0bcyg");
     const newPath = await uploader(path);
 
-    newBody.profile_picture = newPath.url;
+    newBody.picture = newPath.url;
   }
 
   const attendance = await Attendance.create(newBody);

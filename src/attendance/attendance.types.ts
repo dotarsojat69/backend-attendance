@@ -8,7 +8,7 @@ export const attendanceSchema = z.object({
   latitude: z.number({
     required_error: "latitude is required"
   }),
-  profile_picture: z.string().optional(),
+  picture: z.string().optional(),
 });
 
 export type AttendanceCreateSchema = z.infer<typeof attendanceSchema>;
