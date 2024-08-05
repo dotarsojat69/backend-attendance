@@ -14,6 +14,7 @@ export const bodyLogin = z.object({
 });
 
 export const loginSchema = z.object({
+  query: querySchema,
   body: bodyLogin,
 });
 
