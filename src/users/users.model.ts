@@ -11,7 +11,7 @@ const cloudinary = require("../utils/configs/cloudinary");
 const Users = sequelize.define(
   "users",
   {
-    nik: {
+    nip: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -35,18 +35,6 @@ const Users = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue:
         "https://res.cloudinary.com/dj9i0bcyg/image/upload/v1722767567/pp_hyticn.png",
-    },
-    position: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    working_hour: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    location: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
   },
   {
@@ -140,7 +128,16 @@ export const deleteUserByIdToken = async (req: Request) => {
 export const getUserById = async (id: string) => {
   const user = await Users.findOne({
     where: { id, deletedAt: null },
-    attributes: ['id', 'nik', 'full_name', 'email', 'role', 'profile_picture', 'position', 'working_hour'],
+    attributes: [
+      "id",
+      "nik",
+      "full_name",
+      "email",
+      "role",
+      "profile_picture",
+      "position",
+      "working_hour",
+    ],
   });
 
   return user;

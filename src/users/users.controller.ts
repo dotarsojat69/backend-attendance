@@ -95,23 +95,24 @@ export const userDelete = async (req: Request, res: Response) => {
 };
 
 export const userGetDetail = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { id_user } = req.params;
 
   try {
-    const data = await getUserById(id);
-    
+    const data = await getUserById(id_user);
+
     if (!data) {
       return res.status(404).json({ message: "User tidak ditemukan" });
     }
 
-    res.status(200).json({ 
-      message: "Detail user berhasil diambil", 
-      data 
+    res.status(200).json({
+      message: "Detail user berhasil diambil",
+      data,
     });
   } catch (err: any) {
     console.error(`Error saat mengambil detail user: ${err.message}`);
-    res.status(500).json({ 
-      message: "Terjadi kesalahan saat mengambil detail user. Silakan coba lagi nanti." 
+    res.status(500).json({
+      message:
+        "Terjadi kesalahan saat mengambil detail user. Silakan coba lagi nanti.",
     });
   }
 };

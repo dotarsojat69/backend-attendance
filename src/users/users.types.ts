@@ -2,7 +2,7 @@ import { z } from "zod";
 import { querySchema } from "../utils/types/type";
 
 export const userSchema = z.object({
-  nik: z.string({
+  nip: z.string({
         required_error: "NIK is required",
       }),
   full_name: z.string({
@@ -16,20 +16,11 @@ export const userSchema = z.object({
   password: z.string({
     required_error: "Password is required",
   }),
-  position: z.string({
-    required_error: "Position is required",
-  }),
-  working_hour: z.string({
-    required_error: "Working Hour is required",
-  }),
-  location: z.string({
-    required_error: "Location is required",
-  }),
   profile_picture: z.string().optional(),
 });
 
 export const bodyRegister = z.object({
-  nik: z.string({
+  nip: z.string({
         required_error: "NIK is required",
       }),
   full_name: z.string({
@@ -46,12 +37,6 @@ export const bodyRegister = z.object({
   role: z.enum(["user", "admin"], { required_error: "Role is required" }),
   position: z.string({
     required_error: "Position is required",
-  }),
-  working_hour: z.string({
-    required_error: "Working Hour is required",
-  }),
-  location: z.string({
-    required_error: "location Hour is required",
   }),
 });
 
