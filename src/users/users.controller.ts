@@ -31,12 +31,21 @@ export const userSignup = async (req: Request, res: Response) => {
         .json({ message: "User already exist, please login." });
     }
 
+    let newUser;
     if (query.overwrite === "true") {
-      await regisUser(body);
+      newUser = await regisUser(body);
+    } else {
+      // Jika overwrite tidak true, kita tetap harus membuat user
+      newUser = await regisUser(body);
     }
 
-    return res.status(201).json({ message: "User registered, please login." });
+    if (newUser) {
+      return res.status(201).json({ message: "User registered, please login.", userId: newUser });
+    } else {
+      return res.status(400).json({ message: "Failed to register user." });
+    }
   } catch (err: any) {
+    console.error('Error in userSignup:', err);
     return res.status(500).json({ message: err.message });
   }
 };

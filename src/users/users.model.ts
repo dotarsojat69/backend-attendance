@@ -15,7 +15,7 @@ const Users = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    full_name: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -53,19 +53,24 @@ sequelize
   });
 
   export const regisUser = async (body: RegistSchema) => {
-    const { email, password } = body;
-  
-    const encryptedPassword = await bcrypt.hash(password, 10);
-  
-    const object = {
-      ...body,
-      email: email.toLowerCase(),
-      password: encryptedPassword,
-    };
-  
-    const user = await Users.create(object);
-  
-    return user;
+    try {
+      const { email, password } = body;
+    
+      const encryptedPassword = await bcrypt.hash(password, 10);
+    
+      const object = {
+        ...body,
+        email: email.toLowerCase(),
+        password: encryptedPassword,
+      };
+    
+      const user = await Users.create(object);
+    
+      return user;
+    } catch (error) {
+      console.error('Error in regisUser:', error);
+      throw error; // Re-throw error untuk ditangani di controller
+    }
   };
 
 export const getUserByIdToken = async (req: Request) => {
@@ -130,13 +135,11 @@ export const getUserById = async (id: string) => {
     where: { id, deletedAt: null },
     attributes: [
       "id",
-      "nik",
+      "nip",
       "full_name",
       "email",
       "role",
-      "profile_picture",
-      "position",
-      "working_hour",
+      "profile_picture"
     ],
   });
 

@@ -5,7 +5,7 @@ export const userSchema = z.object({
   nip: z.string({
         required_error: "NIK is required",
       }),
-  full_name: z.string({
+  name: z.string({
     required_error: "Full name is required",
   }),
   email: z
@@ -21,10 +21,10 @@ export const userSchema = z.object({
 
 export const bodyRegister = z.object({
   nip: z.string({
-        required_error: "NIK is required",
+        required_error: "NIP is required",
       }),
-  full_name: z.string({
-    required_error: "Full name is required",
+  name: z.string({
+    required_error: "Name is required",
   }),
   email: z
     .string({
@@ -35,9 +35,6 @@ export const bodyRegister = z.object({
     required_error: "Password is required",
   }),
   role: z.enum(["user", "admin"], { required_error: "Role is required" }),
-  position: z.string({
-    required_error: "Position is required",
-  }),
 });
 
 export const registerSchema = z.object({
