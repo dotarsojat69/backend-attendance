@@ -1,22 +1,26 @@
-require("dotenv").config();
-import http from "http";
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { sequelize } from './models';
+import authRoutes from './routes/authRoutes';
+import attendanceRoutes from './routes/attendanceRoutes';
+import employeeRoutes from './routes/employeeRoutes';
 
-import routes from "./routes";
+dotenv.config();
 
-declare module "express-serve-static-core" {
-  interface Request {
-    token: {
-      user_id: number;
-      role: "user" | "admin";
-    };
-  }
-}
+const app = express();
+const port = process.env.PORT || 3000;
 
-const server = http.createServer(routes);
+app.use(cors());
+app.use(express.json());
 
-const { API_PORT }  = process.env;
-const port = process.env.PORT ?? API_PORT;
+app.use('/api/auth', authRoutes);
+app.use('/api/employees', employeeRoutes);
+app.use('/api/attendance', attendanceRoutes);
 
-server.listen(port, () => {
-  console.log(`Server ready to serve and running on port ${port}`);
+sequelize.sync().then(() => {
+  console.log('Database synced');
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
 });
